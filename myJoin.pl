@@ -24,9 +24,9 @@ GetOptions("H" => \$header,
 "help" => \$help) or die("Error in command line arguments -h for help\n");
 
 #return help flag
-help_me()  ($help);
+help_me() if ($help);
 
-#check for incorrect usage -d and -u
+#check for incorrect usage of -d and -u
 die "Error in command line arguments --h for help\n" if ($duplicate && $unique);
 
 #command line input
@@ -35,14 +35,14 @@ foreach(@ARGV){
 }
 
 #add hash keys to uniq and dup arrays
-if($header){
+if ($header){
     print "$header_text\n";
 }
 
 foreach my $line(sort keys %line1){
     print "$line\n" if ($unique && $line1{$line} == 1);
     print "$line\n" if ($duplicate && $line1{$line} > 1);
-    print "$line\n" if (!$unique  !$duplicate);
+    print "$line\n" if (!$unique &&  !$duplicate);
 }
 
 exit;

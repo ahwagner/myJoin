@@ -18,10 +18,10 @@ my @uniq;
 my @dup;
 
 #set input flags
-GetOptions ("H" => \$header,
-            "unique" => \$unique,
-            "duplicate" => \$duplicate,
-            "help" => \$help) or die ("Error in command line arguments -h for help\n");
+GetOptions("H" => \$header,
+"unique" => \$unique,
+"duplicate" => \$duplicate,
+"help" => \$help) or die("Error in command line arguments -h for help\n");
 
 #return help flag
 help_me() if ($help);
@@ -31,7 +31,7 @@ die "Error in command line arguments --h for help\n" if ($duplicate && $unique);
 
 #command line input
 foreach(@ARGV){
-	line_hash1($_);
+    line_hash1($_);
 }
 
 #add hash keys to uniq and dup arrays
@@ -40,46 +40,45 @@ if ($header){
 }
 
 foreach my $line(sort keys %line1){
-	print "$line\n" if ($unique && $line1{$line} == 1);
-	print "$line\n" if ($duplicate && $line1{$line} > 1);
-	print "$line\n" if (!$unique && !$duplicate);
+    print "$line\n" if ($unique && $line1{$line} == 1);
+    print "$line\n" if ($duplicate && $line1{$line} > 1);
+    print "$line\n" if (!$unique &&  !$duplicate);
 }
 
 exit;
 
-
 ###################################################
-
-#Use first observed line as header if flagged, populate hash with line name as hash key.
-#Duplicate line names removed keys cannot be duplicated in hash.
+#use first observed line as header if flagged, populate hash with line name as key
+#Duplicate line names removed, keys can not be duplicated in hash.
 #increment any names repeated more than once, indicates they are duplicates.
+
 sub line_hash1{
-	my $input = shift;
+    my $input = shift;
     open(FILE, $input) or die $!;
     if ($header){
-    	$header_text = <FILE>;
-    	chomp $header_text;
+        $header_text = <FILE>;
+        chomp $header_text;
     }
-	while (<FILE>){
-		chomp;
-		$line1{$_} += 1;
+    while (<FILE>){
+        chomp;
+        $line1{$_} += 1;
     }
-	close FILE;
+    close FILE;
 }
 
-#sub routine to print help statement
+
+
 sub help_me {
-    print 
-"
-Returns a join of multiple files, similar to GNU join.
-
+    print
+    "
+    Returns a join of multiple files, similar to GNU join.
 usage: myjoin [options] file1 file2 [file3...]
-  options:
-    -h, --help	this help text
-    -H		files contain a header line
-    -u		returns list of unique lines [mutually exclusive with -d]
-    -d		returns list of duplicate lines [mutually exclusive with -u]
-
-";
+options:
+    -h, --help this help text
+    -H  files contain a header line
+    -u  returns list of unique lines[mutually exclusive with -d]
+    -d  returns list of duplicate lines [mutually exclusive with -u]
+    ";
     exit;
 }
+

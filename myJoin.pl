@@ -77,17 +77,14 @@ sub line_hash1{
     if ($header){
         $header_text = <FILE>;
         chomp $header_text;
-        }
-        while (<FILE>){
-            chomp;
-            #hash to remove duplicate names from individual file
-            $observed{$_}++;
-            next if $observed{$_} > 1;
-                    }
-                    #hash to find duplicate names between files
-                    foreach my $unq (sort keys %observed){
-                        $line1{$unq} += 1;
-                        }
+    }
+    while (<FILE>){
+        chomp;
+        #hash to remove duplicate names from individual file
+        $observed{$_}++;
+        next if $observed{$_} > 1;
+        $line1{$_} += 1;
+    }
     close FILE;
 }
 

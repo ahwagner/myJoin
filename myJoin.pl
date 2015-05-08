@@ -99,7 +99,10 @@ options:
     -h, --help this help text
     -H  files contain a header line
     -u  returns list of unique lines[mutually exclusive with -d]
-    -d  returns list of duplicate lines [mutually exclusive with -u]
+    -n  returns list of duplicate lines in all files,  [mutually exclusive with -u]
+        n=1,2,[3...] minimum number of files line must be present in to output\n
+
+    
     ";
     exit;
 }

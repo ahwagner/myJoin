@@ -24,7 +24,7 @@ my %count;
 my @headers;
 my @uniq;
 my @dup;
-my @field;
+my @fields;
 my @row;
 
 #set input flags
@@ -36,7 +36,12 @@ GetOptions(
 "help" => \$help) or die("Error in command line arguments -h for help\n");
 
 #process field argument
-@field = split(",", $field);
+@fields = split(",", $field);
+my %field_names = map {$_ => 1} @fields;
+
+if(@fields){
+	$header = 1;
+}
 
 #return help flag
 help_me() if ($help);
@@ -76,7 +81,7 @@ foreach my $line (sort keys %line1){
 #print "Hash line1=";
 #print Dumper(\%line1);
 print Dumper(\%header_lib);
-print Dumper(\@field);
+print Dumper(\@fields);
 #print Dumper(\@headers);
 #print Dumper(\@row);
 print Dumper(\%attribu);
@@ -98,33 +103,28 @@ sub line_hash1{
         @headers = split("\t", $header_text);
         %header_lib = map {$headers[$_] => $_} 0..$#headers;
     }
-#    print "reading $input\n";
+#     print "headers: @headers\n";
+# 	  print Dumper %header_lib;
     while (<FILE>){
+    	chomp;
         @row = split("\t");
-#        map {print "my row $_\n";} @row;
         my $key = '';
-        foreach my $k (@field){
+        foreach my $k (@fields){
             $ref = $header_lib{$k};
             if (exists $row[$ref]){
-            $key .=  $row[$ref];
-#           map {print "my row: $_\n";} @row;
+            	$key .=  $row[$ref];
             }else{
                 die "input file contains empty fields";
-                }
-#           print "my key: $key\n";
-
-           
-            }
-        #This field
-        foreach my $h (keys %header_lib){
-            foreach my $v (@field){
-            if ($h ne $v){
-            my $i = $header_lib{$h};
-            $attribu{$key}{$h} = $row[$i];
-                }
             }
         }
-
+        print "my key: $key\n";
+    
+        # Add non-key fields to attribu dictionary
+        foreach my $h (keys %header_lib){
+            next if( defined $field_names{$h} );
+			my $i = $header_lib{$h};
+			$attribu{$key}{$h} = $row[$i];
+		}
     }
     close FILE;
 }

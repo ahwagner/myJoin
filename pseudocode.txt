@@ -1,0 +1,26 @@
+/usr/bin/perl -w
+use strict;
+
+####PSEUDOCODE
+
+# Usage: myJoin [-H] -f key1,key2,key3 *.txt
+
+# def main():
+	# Process flags:
+	#	fields, unique, duplicate, etc.
+	#	fail conditions (conflicting flags, args)
+
+	# For each passed file ('*.txt')
+	#	Process header (or not--if `-f` nor `-H` are not used)
+	#	For each line of file:
+	#		key = Load_key(row) (could be whole line)
+	#		attributes{key} = Load_attributes(row) (could be none, if -f is not used)
+	
+	# For each key:
+	#	Print key, ordered attribues
+	#		This print should be aware of -d and -n flags.
+
+# def Load_attributes():
+#	make sure new attributes (from header) have not been seen previously
+#	if they have been seen, rename
+#	assign values from split row to attributes
